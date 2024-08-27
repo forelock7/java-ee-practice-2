@@ -1,0 +1,39 @@
+
+version: '3'
+services:
+  tomcat:
+    build:
+      dockerfile: ./tomcat/Dockerfile
+      context: .
+    image: tomcat
+    ports:
+     - "8080:8080"
+     - "5005:5005"
+#    environment:
+#      - CATALINA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -DLog4j2.formatMsgNoLookups=true -Dfile.encoding=UTF8 -Djava.net.preferIPv4Stack=true -Dhttps.protocols=TLSv1.1,TLSv1.2 -Xms1024m -Xmx4096m
+    depends_on:
+      - postgres
+    networks:
+      - local
+  postgres:
+    build:
+      dockerfile: ./Dockerfile
+      context: ./db
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/data:/var/lib/postgresql/data
+    networks:
+      - local
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8081:8080"
+    networks:
+      - local
+networks:
+  local:
+    driver: bridge
