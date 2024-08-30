@@ -6,54 +6,8 @@
     <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-<div id="container">
-    <div id="add-book" class="add-book-section">
-        <h1 id="form-author"></h1>
-        <form id="book-form">
-            <input type="hidden" id="book-id" readonly>
-            <div class="form-group">
-                <label for="title">Title:</label>
-                <input type="text" id="title" name="title" placeholder="Title" required>
-            </div>
-            <div class="form-group">
-                <label for="author">Author:</label>
-                <input type="text" id="author" name="author" placeholder="Author" required>
-            </div>
-            <div class="form-group">
-                <label for="genre">Genre:</label>
-                <input type="text" id="genre" name="genre" placeholder="Genre" required>
-            </div>
-            <div class="form-group">
-                <label for="year">Year:</label>
-                <input type="text" id="year" name="year" placeholder="Year" required>
-            </div>
-            <div class="form-group" id="add-update-button-container" class="form-group"></div>
-            <div class="form-group" id="cancel-button-container" class="form-group">
-                <button id="cancel-button" onclick="resetAddUpdateForm()">Cancel</button>
-            </div>
-        </form>
-    </div>
-    <div id="books-table-container">
-        <h1>Books List</h1>
-        <table id="books-table">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tittle</th>
-                <th>Author</th>
-                <th>Genre</th>
-                <th>Year</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody id="books-list">
-            <!-- Сюди буде вставлено список завдань -->
-            </tbody>
-        </table>
-    </div>
-</div>
 <ul>
-    <li><a href="/">Back to API list</a></li>
+    <li><a href="${pageContext.request.contextPath}/books.jsp">Open books list</a></li>
 </ul>
 
 <!-- Підключення скрипта books.js -->
