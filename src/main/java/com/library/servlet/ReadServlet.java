@@ -20,12 +20,14 @@ public class ReadServlet extends HttpServlet {
     protected void doGet(
             HttpServletRequest request,
             HttpServletResponse response) throws IOException {
+        // Встановлюємо тип контенту як JSON
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+
         ArrayList<Book> bookList = new ArrayList<>();
 
-        System.out.println("Enter doGet");
-
         try (Connection conn = DatabaseConnection.getConnection()) {
-            String sql = "SELECT * FROM books";
+            String sql = "SELECT * FROM public.books";
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
