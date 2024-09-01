@@ -1,4 +1,4 @@
-package com.example.javaeepractice2.utils;
+package com.library.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

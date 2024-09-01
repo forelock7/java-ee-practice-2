@@ -176,9 +176,9 @@ document.getElementById('book-form').addEventListener('input', validateForm);
 
 // Initial setup
 window.onload = function() {
-    setupFormAuthor();
-    setupAddButton();
-    validateForm()
+    // setupFormAuthor();
+    // setupAddButton();
+    // validateForm()
     loadBooksTable();
 };
 
