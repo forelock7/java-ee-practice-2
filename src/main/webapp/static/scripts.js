@@ -26,10 +26,10 @@ function submitForm() {
     const title = document.getElementById('title').value;
     const author = document.getElementById('author').value;
     const genre = document.getElementById('genre').value;
-    const year = document.getElementById('year').value;
+    const year = Number.parseInt(document.getElementById('year').value);
 
     const data = {
-        id: id,
+        // id: id,
         title: title,
         author: author,
         genre: genre,
@@ -138,8 +138,8 @@ function loadBooksTable() {
                     <td>${book.genre}</td>
                     <td>${book.year}</td>
                     <td class="table-button-cell">
-                        <button class="table-button delete-book-button" onclick="deleteBook(${book.id})">❌</button>
-                        <button class="table-button update-book-button" onclick="loadUpdateForm(${book.id})">✍️</button>
+                        <button class="table-button delete-book-button" onclick="deleteBook(${book.id})">Delete</button>
+                        <button class="table-button update-book-button" onclick="loadUpdateForm(${book.id})">Edit</button>
                     </td>
                 `;
             });
@@ -176,9 +176,9 @@ document.getElementById('book-form').addEventListener('input', validateForm);
 
 // Initial setup
 window.onload = function() {
-    // setupFormAuthor();
-    // setupAddButton();
-    // validateForm()
+    setupFormAuthor();
+    setupAddButton();
+    validateForm()
     loadBooksTable();
 };
 

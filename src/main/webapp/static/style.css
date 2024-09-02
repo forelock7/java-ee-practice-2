@@ -66,7 +66,10 @@ td {
 }
 td.table-button-cell {
     border: 1px solid black;
+    display: flex;
+    justify-content: space-evenly;
 }
 button.table-button {
     padding: 4px;
+    flex: 1;
 }
