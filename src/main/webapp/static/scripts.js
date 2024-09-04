@@ -55,7 +55,7 @@ function addBook(data) {
         .then(response => response.json())
         .then(() => {
             resetAddUpdateForm();
-            // Оновлюємо список студентів на сторінці
+            // Оновлюємо список книг на сторінці
             loadBooksTable();
         })
         .catch(error => console.error('Error:', error));
@@ -65,14 +65,16 @@ function updateBook(book_id, data) {
     console.log('Updating book:', book_id, data);
     // Відправляємо дані на сервер для додавання завдання
     fetch(`/api/books/${book_id}`, {
-        method: 'PATCH',
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     })
-        .then(response => response.json())
-        .then(() => {
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Book not found');
+            }
             resetAddUpdateForm();
             loadBooksTable();
         })
