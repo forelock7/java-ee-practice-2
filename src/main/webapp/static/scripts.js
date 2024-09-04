@@ -110,16 +110,21 @@ function deleteBook(book_id) {
     fetch(`/api/books/${book_id}`, {
         method: 'DELETE',
     })
-        .then(response => response.json())
-        .then(data => {
-            if(data.success) {
-                // Оновлюємо список студентів на сторінці
+        .then(response => {
+            if(response.ok) {
+                // Оновлюємо список книг на сторінці
                 loadBooksTable();
             } else {
-                alert(data.message);
+                // Замість response.message використовуйте текст відповіді
+                return response.text().then(text => {
+                    throw new Error(text || 'Unknown error occurred');
+                });
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to delete book: ' + error.message);
+        });
 }
 
 function loadBooksTable() {

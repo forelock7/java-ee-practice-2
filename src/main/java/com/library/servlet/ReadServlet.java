@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-@WebServlet("/api/books")
+@WebServlet("/api/books/*")
 public class ReadServlet extends HttpServlet {
 
     @Override
@@ -60,7 +60,6 @@ public class ReadServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         // Перетворення списку книг у JSON формат
         String json = new Gson().toJson(bookList);
@@ -103,6 +102,47 @@ public class ReadServlet extends HttpServlet {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"message\":\"An error occurred while processing your request.\"}");
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Отримати ідентифікатор книги з URL
+        String pathInfo = request.getPathInfo(); // /{book_id}
+        if (pathInfo == null || pathInfo.equals("/")) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Book ID is missing");
+            return;
+        }
+
+        String[] pathParts = pathInfo.split("/");
+        if (pathParts.length != 2) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid URL format");
+            return;
+        }
+
+        String bookIdStr = pathParts[1];
+        int bookId;
+        try {
+            bookId = Integer.parseInt(bookIdStr);
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid book ID format");
+            return;
+        }
+
+        // Видалення книги з бази даних
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM books WHERE id = ?")) {
+            statement.setInt(1, bookId);
+            int rowsAffected = statement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT); // 204 No Content
+            } else {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Book not found");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Database error");
         }
     }
 }
