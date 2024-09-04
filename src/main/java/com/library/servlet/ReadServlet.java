@@ -15,11 +15,29 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
 @WebServlet("/api/books")
 public class ReadServlet extends HttpServlet {
+
+    @Override
+    public void init() throws ServletException {
+        try {
+            Class.forName("org.postgresql.Driver");
+            // Тестове з'єднання з базою даних
+            try (Connection connection = DatabaseConnection.getConnection()) {
+                // Лог для успішного підключення
+                System.out.println("Database connected successfully in init method");
+            } catch (SQLException e) {
+                throw new ServletException("Database connection test failed", e);
+            }
+        } catch (ClassNotFoundException e) {
+            throw new ServletException("PostgreSQL JDBC Driver not found", e);
+        }
+    }
+
     @Override
     protected void doGet(
             HttpServletRequest request,
