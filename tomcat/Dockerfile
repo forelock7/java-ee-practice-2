@@ -1,21 +1,19 @@
 FROM tomcat:latest
 
-# Встановлюємо GSON бібліотеку та PostgreSQL драйвер
-RUN apt-get update && apt-get install -y \
-    wget && \
+# Встановлюємо GSON бібліотеку, PostgreSQL драйвер, Maven і curl в одному кроці, а потім очищуємо кеші
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget \
+    maven \
+    curl && \
     wget https://repo1.maven.org/maven2/com/google/code/gson/gson/2.8.9/gson-2.8.9.jar -P /usr/local/tomcat/lib/ && \
-    wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P /usr/local/tomcat/lib/
-
-# Встановлюємо Maven
-RUN apt-get update && apt-get install -y maven
-
-# Встановлюємо curl для тестування контейнера
-RUN apt-get update && apt-get install -y curl
+    wget https://jdbc.postgresql.org/download/postgresql-42.6.0.jar -P /usr/local/tomcat/lib/ && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Визначаємо робочу директорію
 WORKDIR /usr/src/app
 
-# Копіюємо все до робочої директорії
+# Копіюємо файли проекту до робочої директорії
 COPY . .
 
 # Збираємо проект за допомогою Maven
@@ -24,8 +22,8 @@ RUN mvn clean package
 # Копіюємо зібраний WAR файл до веб-додатків Tomcat
 RUN cp target/*.war /usr/local/tomcat/webapps/myapp.war
 
+# Копіюємо конфігурацію Tomcat
 COPY ./tomcat/ROOT.xml /usr/local/tomcat/conf/Catalina/localhost/
-COPY ../target/*.war /usr/local/tomcat/myApp/myapp.war
 
 # Вказуємо порт, який буде використовувати контейнер
 EXPOSE 8080
