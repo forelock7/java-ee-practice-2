@@ -20,7 +20,7 @@ COPY . .
 RUN mvn clean package
 
 # Копіюємо зібраний WAR файл до веб-додатків Tomcat
-RUN cp target/*.war /usr/local/tomcat/webapps/myapp.war
+RUN cp target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 # Копіюємо конфігурацію Tomcat
 COPY ./tomcat/ROOT.xml /usr/local/tomcat/conf/Catalina/localhost/
