@@ -30,3 +30,7 @@ jobs:
     # Runs a single command using the runners shell
     - name: Send greeting
       run: echo "Hello ${{ inputs.name }}"
+    # Run docker compose
+    - name: Docker Compose Action
+      uses: hoverkraft-tech/compose-action@v2.0.2
+            
