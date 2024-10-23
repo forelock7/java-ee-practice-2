@@ -16,8 +16,10 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Runs a single command using the runners shell
-    # Run docker compose
+    # Step 1: Checkout the repository
+    - name: Check out the repository
+      uses: actions/checkout@v4
+    # Step 2: Run docker compose
     - name: Docker Compose Action
       uses: hoverkraft-tech/compose-action@v2.0.2
       with:
